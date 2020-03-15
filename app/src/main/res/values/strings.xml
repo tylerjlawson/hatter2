@@ -20,5 +20,6 @@
     <string name="menu_save">Save to cloud&#8230;</string>
     <string name="menu_load">Load from cloud&#8230;</string>
     <string name="menu_delete">Delete from cloud&#8230;</string>
+    <string name="load_fm_title">Load from cloud</string>
 
 </resources>
