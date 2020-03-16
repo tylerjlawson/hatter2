@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
 
 import androidx.fragment.app.DialogFragment;
+
+import edu.msu.lawsont2.cloudhatter.Cloud.Cloud;
 
 public class LoadDlg extends DialogFragment {
 
@@ -40,6 +43,13 @@ public class LoadDlg extends DialogFragment {
         });
 
         AlertDialog dlg = builder.create();
+
+        // Find the list view
+        ListView list = (ListView)view.findViewById(R.id.listHattings);
+
+        // Create an adapter
+        final Cloud.CatalogAdapter adapter = new Cloud.CatalogAdapter(list);
+        list.setAdapter(adapter);
 
         return dlg;
     }
