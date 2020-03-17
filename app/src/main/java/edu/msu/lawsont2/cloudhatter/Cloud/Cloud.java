@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,10 +60,18 @@ public class Cloud {
                     } catch (Exception e) {
                         // Error condition! Somethign went wrong
                         Log.e("CatalogAdapter", "Something went wrong when loading the catalog", e);
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(view.getContext(), R.string.catalog_fail, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             }).start();
         }
+
+        public String getId(int position) { return getItem(position).getId(); }
 
         @Override
         public int getCount() {
@@ -103,13 +112,13 @@ public class Cloud {
     public static final String LOAD_PATH = "hatter-load.php";
     private static final String UTF8 = "UTF-8";
 
-    private Retrofit retrofit = new Retrofit.Builder()
+    private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
 
     // Create a GET query
-    public Catalog getCatalog() throws IOException {
+    public static Catalog getCatalog() throws IOException {
         HatterService service = retrofit.create(HatterService.class);
         return service.getCatalog(USER, MAGIC, PASSWORD).execute().body();
     }

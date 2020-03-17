@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.fragment.app.DialogFragment;
@@ -42,7 +43,7 @@ public class LoadDlg extends DialogFragment {
             }
         });
 
-        AlertDialog dlg = builder.create();
+        final AlertDialog dlg = builder.create();
 
         // Find the list view
         ListView list = (ListView)view.findViewById(R.id.listHattings);
@@ -50,6 +51,20 @@ public class LoadDlg extends DialogFragment {
         // Create an adapter
         final Cloud.CatalogAdapter adapter = new Cloud.CatalogAdapter(list);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new ListView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // Get the id of the one we want to load
+                String catId = adapter.getId(position);
+
+                // Dismiss the dialog box
+                dlg.dismiss();
+            }
+
+        });
 
         return dlg;
     }
