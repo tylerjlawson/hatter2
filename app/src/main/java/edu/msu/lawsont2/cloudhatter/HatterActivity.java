@@ -111,7 +111,7 @@ public class HatterActivity extends AppCompatActivity {
     /**
      * Ensure the user interface components match the current state
      */
-    private void updateUI() {
+    public void updateUI() {
         spinner.setSelection(hatterView.getHat());
         featherCheck.setChecked(hatterView.getFeather());
         colorButton.setEnabled(hatterView.getHat() == HatterView.HAT_CUSTOM);

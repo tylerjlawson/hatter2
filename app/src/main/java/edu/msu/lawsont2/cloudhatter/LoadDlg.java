@@ -62,6 +62,10 @@ public class LoadDlg extends DialogFragment {
 
                 // Dismiss the dialog box
                 dlg.dismiss();
+
+                LoadingDlg loadDlg = new LoadingDlg();
+                loadDlg.setCatId(catId);
+                loadDlg.show(getActivity().getSupportFragmentManager(), "loading");
             }
 
         });

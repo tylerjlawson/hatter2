@@ -12,8 +12,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.msu.lawsont2.cloudhatter.Cloud.Models.Catalog;
+import edu.msu.lawsont2.cloudhatter.Cloud.Models.Hat;
 import edu.msu.lawsont2.cloudhatter.Cloud.Models.Item;
+import edu.msu.lawsont2.cloudhatter.Cloud.Models.LoadResult;
 import edu.msu.lawsont2.cloudhatter.R;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
@@ -71,6 +74,9 @@ public class Cloud {
             }).start();
         }
 
+
+
+
         public String getId(int position) { return getItem(position).getId(); }
 
         @Override
@@ -99,6 +105,35 @@ public class Cloud {
 
 
             return view;
+        }
+    }
+
+    /**
+     * Open a connection to a hatting in the cloud.
+     * @param id id for the hatting
+     * @return reference to an input stream or null if this fails
+     */
+    public Hat openFromCloud(final String id) {
+        HatterService service = retrofit.create(HatterService.class);
+        try {
+            Response<LoadResult> response = service.loadHat(USER, MAGIC, PASSWORD, id).execute();
+
+            // check if request failed
+            if (!response.isSuccessful()) {
+                Log.e("OpenFromCloud", "Failed to load hat, response code is = " + response.code());
+                return null;
+            }
+
+            LoadResult result = response.body();
+            if (result.getStatus().equals("yes")) {
+                return result.getHat();
+            }
+
+            Log.e("OpenFromCloud", "Failed to load hat, message is = '" + result.getMessage() + "'");
+            return null;
+        } catch (IOException e) {
+            Log.e("OpenFromCloud", "Exception occurred while loading hat!", e);
+            return null;
         }
     }
 

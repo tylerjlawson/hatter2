@@ -20,12 +20,47 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import edu.msu.lawsont2.cloudhatter.Cloud.Models.Hat;
+
 
 /**
  * The hatter view. Displays an image with a hat drawn over
  * it that we can manipulate.
  */
 public class HatterView extends View {
+
+    public void loadHat(Hat hat) {
+        // Create a new set of parameters
+        final Parameters newParams = new Parameters();
+
+        // Load into it
+        newParams.imageUri = hat.getUri();
+        newParams.hatX = hat.getX();
+        newParams.hatY = hat.getY();
+        newParams.hatAngle = hat.getAngle();
+        newParams.hatScale = hat.getScale();
+        newParams.color = hat.getColor();
+        newParams.hat = hat.getType();
+        newParams.feather = hat.getFeather().equals("yes");
+
+        post(new Runnable() {
+
+            @Override
+            public void run() {
+                params = newParams;
+
+                // Ensure the options are all set
+                setColor(params.color);
+                setImageUri(params.imageUri);
+                setHat(params.hat);
+                setFeather(params.feather);
+
+            }
+
+        });
+
+    }
+
     /*
      * The ID values for each of the hat types. The values must
      * match the index into the array hats_spinner in arrays.xml.
